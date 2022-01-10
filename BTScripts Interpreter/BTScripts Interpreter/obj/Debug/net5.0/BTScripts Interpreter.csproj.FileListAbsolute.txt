@@ -1,0 +1,5 @@
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net5.0\BTScripts Interpreter.csproj.AssemblyReference.cache
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net5.0\BTScripts Interpreter.GeneratedMSBuildEditorConfig.editorconfig
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net5.0\BTScripts Interpreter.AssemblyInfoInputs.cache
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net5.0\BTScripts Interpreter.AssemblyInfo.cs
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net5.0\BTScripts Interpreter.csproj.CoreCompileInputs.cache

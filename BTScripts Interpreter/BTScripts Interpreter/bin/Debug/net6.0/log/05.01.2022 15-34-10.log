@@ -1,0 +1,1 @@
+FATAL : Variable ret is type int but his new value is type of string

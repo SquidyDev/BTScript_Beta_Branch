@@ -1,0 +1,15 @@
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\bin\Debug\net6.0\BTScripts Interpreter.exe
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\bin\Debug\net6.0\BTScripts Interpreter.deps.json
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\bin\Debug\net6.0\BTScripts Interpreter.runtimeconfig.json
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\bin\Debug\net6.0\BTScripts Interpreter.dll
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\bin\Debug\net6.0\ref\BTScripts Interpreter.dll
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\bin\Debug\net6.0\BTScripts Interpreter.pdb
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.csproj.AssemblyReference.cache
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.GeneratedMSBuildEditorConfig.editorconfig
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.AssemblyInfoInputs.cache
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.AssemblyInfo.cs
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.csproj.CoreCompileInputs.cache
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.dll
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\ref\BTScripts Interpreter.dll
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.pdb
+F:\Bits Script\BTScripts Interpreter\BTScripts Interpreter\BTScripts Interpreter\obj\Debug\net6.0\BTScripts Interpreter.genruntimeconfig.cache

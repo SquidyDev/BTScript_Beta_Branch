@@ -1,0 +1,9 @@
+﻿VARIABLE_ASSIGN (0)  => This Event design a variable assignation				  | my_var : string : "Hello World"
+VARIABLE_DELETE (1)  => This Event design a variable being deleted				  |	del my_var
+VARIABLE_CHANGE (2)  => This Event design a variable being changed				  |	my_var = "Goodbye World"
+VARIABLE_COPY (3)	 => This Event design a variable being copiied				  |	other_var : string : my_var
+FUNCTION_CALL (4)	 => This Event design a function being called				  |	call My_Function : args
+FUNCTION_DEFINE (5)  => This Event design a function being created				  | My_Function :: args : type {
+IN_FUNCTION_CALL (6) => This Event design a C# Builtin Function being called	  | call in print : "Hello World"
+COMMENT (7)			 => This Event design a line being commented				  | $ This Is a Comment
+EMPTY_LINE (8)		 => This Event design an empty line							  |
