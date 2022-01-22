@@ -2,7 +2,9 @@
 using BTScript.Interpreter.Var;
 using BTScript.Interpreter.Configuration;
 using BTScript.Debug;
+using System.Collections;
 using BTScript.Interpreter.Utility.String;
+using BTScript.Interpreter.Utility.Array;
 
 namespace BTScript.Interpreter.Func
 {
@@ -54,6 +56,7 @@ namespace BTScript.Interpreter.Func
 			builtins_function.Add("print", Print);
 			builtins_function.Add("input", Input);
 			builtins_function.Add("get_stack", Get_Stack);
+			builtins_function.Add("to_string", ToString);
 			debug = Interpreter_Config.mainDebugger;
 		}
 
@@ -84,6 +87,19 @@ namespace BTScript.Interpreter.Func
 
 			string input = Console.ReadLine();
 			Return(input);
+		}
+
+		static void ToString(object?[] args) 
+		{
+			string?[] strArgs = Array.ConvertAll(args, x => x?.ToString());
+			string? line = Array_Utility.JoinArray<string, char>(strArgs, ' ').Trim();
+
+			if (Variable_Manager.Exist(line)) 
+			{
+				string? oldValue = Variable_Manager.GetVariable(line).Value.ToString();
+				string newValue = $"\"{oldValue}\"";
+				Variable_Manager.ChangeVariable("ret", newValue);
+			}
 		}
 
 		static void Get_Stack(object[] args) 

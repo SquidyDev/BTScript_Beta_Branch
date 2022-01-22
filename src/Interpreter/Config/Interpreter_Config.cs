@@ -2,6 +2,7 @@
 using BTScript.Interpreter.Type;
 using BTScript.Interpreter.Func;
 using BTScript.Interpreter.Var;
+using BTScript.Interpreter.Scope;
 
 namespace BTScript.Interpreter.Configuration
 {
@@ -13,10 +14,11 @@ namespace BTScript.Interpreter.Configuration
 
         public static Debugger mainDebugger = new Debugger(LogLevel.DEBUG);
         public static FileDebugger mainFileDebugger = new FileDebugger();
+        public static Popup_Debugger mainPopupDebugger = new Popup_Debugger();
 
         public static Interpreter mainInterpreter;
 
-        //Set all the Intepreter Configuration Variable (Debugger, path to file) also Configurate the interpreter types
+        //Set all the Intepreter Configuration Variable (Debugger, path to file) also Configurate the interpreter types and the global scopes
         public static void Config(string mainFilePath) 
         {
             /*Initialize all Path related information*/
@@ -26,7 +28,11 @@ namespace BTScript.Interpreter.Configuration
 
             /*Initialize all the main debugger*/
             mainFileDebugger = new FileDebugger(LogLevel.INFO, "log/" + FileDebugger.GetDate());
-            mainDebugger.Attach(mainFileDebugger);
+            mainPopupDebugger = new Popup_Debugger(LogLevel.ERROR);
+			mainDebugger.Attach(new Debugger[] {mainFileDebugger, mainPopupDebugger});
+
+            /*Initialize the scopes system*/
+            Interpreter_Scope.Init();
 
             /*Initialize the different pre build type*/
             Interpreter_Type.Init();
@@ -35,8 +41,8 @@ namespace BTScript.Interpreter.Configuration
             Builtins.Init();
 
             /*Initialize some core variables*/
-            Variable_Manager.AddVariable("ret : string : \"Return Value\"".Split(' '));
-            Variable_Manager.AddVariable("event : string : \"Last Event\"".Split(' '));
+            Variable_Manager.AddVariable("ret : string : \"Return Value\"".Split(' '), Interpreter_Scope.GlobalScope);
+            Variable_Manager.AddVariable("event : string : \"Last Event\"".Split(' '), Interpreter_Scope.GlobalScope);
 
             /*Initialize the Interpreter*/
             mainInterpreter = new Interpreter(mainFile, pathToMainDirectory);

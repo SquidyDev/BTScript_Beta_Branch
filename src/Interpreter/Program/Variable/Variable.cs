@@ -11,6 +11,7 @@ namespace BTScript.Interpreter.Var
         Type.Type type;
         int reference; //The number of reference to the variable
         List<Variable> referencedVariable = new List<Variable>(); //The List of referenced variable
+        string scopeCode;
         
         /*Use to get acces to data (all are readonly except Type)*/
         public string Name { get { return name; } }
@@ -27,9 +28,10 @@ namespace BTScript.Interpreter.Var
             get { return reference; }
             set { reference = value; }
         }
+        public string ScopeCode { get { return scopeCode; } }
         
         /*Default Constructor For Variable*/
-        public Variable(string name, string value, string type) 
+        public Variable(string name, string value, string type, string scopeCode) 
         {
             this.name = name;
             this.type = Variable_Type.GetTypeFromValue(value, Interpreter_Type.GetTypeByName(type));
@@ -40,6 +42,7 @@ namespace BTScript.Interpreter.Var
             }
 
             this.value = value.Trim() == "?" ? this.type.baseValue : value;
+            this.scopeCode = scopeCode;
             this.reference = 0;
         }
 
@@ -63,5 +66,9 @@ namespace BTScript.Interpreter.Var
                 var.DeleteVariable();
             }
         }
+
+        //Return true if code and scopeCode correspond
+        //Otherwise return false
+        public bool HasScopeCode(string code) => scopeCode == code;
     }
 }

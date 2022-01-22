@@ -7,3 +7,6 @@ FUNCTION_DEFINE (5)  => This Event design a function being created				  | My_Fun
 IN_FUNCTION_CALL (6) => This Event design a C# Builtin Function being called	  | call in print : "Hello World"
 COMMENT (7)			 => This Event design a line being commented				  | $ This Is a Comment
 EMPTY_LINE (8)		 => This Event design an empty line							  |
+IMPLICIT_VARIABLE_ASSIGN (9) => This event design a variable being created without a type specified | my_var : "Hello World"
+IMPLICIT_VARIABLE_COPY (10) => This event design a variable being coppied without any type specified | other_var : my_var
+

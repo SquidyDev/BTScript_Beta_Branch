@@ -1,6 +1,7 @@
 ﻿using BTScript.Interpreter.Event;
 using BTScript.Interpreter.Configuration;
 using BTScript.Interpreter.Utility.Array;
+using BTScript.Interpreter.Scope;
 using BTScript.Interpreter.Type;
 
 namespace BTScript.Interpreter.Var
@@ -14,11 +15,11 @@ namespace BTScript.Interpreter.Var
         public static new string ToString() 
         {
             string output = "";
-
+             
             output += "Begin Stack.\n";
             foreach(Variable? var in variables.Values) 
             {
-                output += $"\t {var.Name} ({var.Type.typeName}) : {var.Value}\n";
+                output += $"\t {var.Name} ({var.Type.typeName} ; {Interpreter_Scope.GetScope(var.ScopeCode)}) : {var.Value}\n";
             }
             output += "End Stack.";
 
@@ -26,7 +27,7 @@ namespace BTScript.Interpreter.Var
         }
 
         /*Add a variable (don't work for copy)*/
-        public static void AddVariable(string[] lineTokens)
+        public static void AddVariable(string[] lineTokens, string scopeCode)
         {
             string name = lineTokens[0];
 
@@ -35,12 +36,12 @@ namespace BTScript.Interpreter.Var
             string rawValue = Array_Utility.JoinArray<string, char>(lineTokens, ' ', startIndex: 4);
             string value = rawValue == "?" ? Interpreter_Type.GetTypeByName(rawValue).baseValue.ToString() : rawValue;
 
-            Variable newVariable = new Variable(name, value, lineTokens[2]);
+            Variable newVariable = new Variable(name, value, lineTokens[2], scopeCode);
             variables.Add(name, newVariable);
         }
 
         /*Adds a new variable with value copied from an other variable*/
-        public static void CopyVariable(string[] lineTokens) 
+        public static void CopyVariable(string[] lineTokens, string scopeCode) 
         {
             string name = lineTokens[0];
             string copyName = lineTokens[4];
@@ -50,8 +51,22 @@ namespace BTScript.Interpreter.Var
             if (!Exist(copyName)) Interpreter_Config.mainDebugger.Fatal($"Unable to copy from source {copyName} to {name} because source doesn't exist in memory");
             if (Exist(name)) Interpreter_Config.mainDebugger.Fatal($"Unable to copy from source {copyName} to {name} because dest already exist in memory");
 
-            Variable varCopy = new Variable(name, GetVariable(copyName).Value.ToString(), type);
+            Variable varCopy = new Variable(name, GetVariable(copyName).Value.ToString(), type, scopeCode);
             variables.Add(name, varCopy);
+        }
+
+        /*Same behaviour has Copyvariable(string[], string)
+         * Arguments :
+         *      oldVariable (string) : the variable to copy name
+         *      newVariable (string) : the new variable's name
+         *      scopeCode (string) : the current scope
+         * Return:
+         *      void
+         */
+        public static void CopyVariable(string oldVariable, string newVariable, string scopeCode) 
+        {
+            Variable varCopy = new Variable(newVariable, GetVariable(oldVariable).Value.ToString(), GetVariable(oldVariable).Type.typeName, scopeCode);
+            variables.Add(newVariable, varCopy);
         }
 
         /*Use to remove a variable*/
@@ -63,6 +78,9 @@ namespace BTScript.Interpreter.Var
 
             variables.Remove(name);
         }
+
+        /*Remove a variable by it's name*/
+        public static void RemoveVariable(string name) => RemoveVariable($"del {name}");
 
         /*Use to change a variable value*/
         public static void ChangeVariable(string[] lineTokens) 
@@ -115,6 +133,9 @@ namespace BTScript.Interpreter.Var
         {
 			if (Exist(key)) { return GetVariable(key).Value.ToString();} else { return key; }
         }
+
+        /*Return an array containing all the variables of a program*/
+        public static Variable[] GetVariables() => variables.Values.ToArray();
 
         /*Return true if the variable name exist in memory*/
         public static bool Exist(string name) => variables.ContainsKey(name);

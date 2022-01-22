@@ -4,6 +4,7 @@ using BTScript.Interpreter.State;
 using BTScript.Interpreter.Event;
 using BTScript.Interpreter.Utility.Array;
 using BTScript.Interpreter.Func;
+using BTScript.Interpreter.Scope;
 using BTScript.Debug;
 
 namespace BTScript.Interpreter
@@ -52,25 +53,43 @@ namespace BTScript.Interpreter
 
                 string currentLine = lines[i];
 
-                InterpreteLine(currentLine);
+                InterpreteLine(currentLine, Interpreter_Scope.GlobalScope);
             }
         }
 
-        public void InterpreteLine(string line) 
+        public void InterpreteLine(string line, string scopeCode) 
         {
             string[] lineTokens = line.Split(' ');
 
             /*Get the associated event to the current line*/
             EventType? lineEvent = Interpreter_Event.GetEventType(lineTokens);
-
             mainDebugger.Debug(lineEvent.ToString());
+
+            //mainDebugger.Debug(lineEvent.ToString());
 
             /*Skip Line if it is a comment*/
             if (lineEvent == EventType.COMMENT || lineEvent == EventType.EMPTY_LINE) return;
 
             if(lineEvent == EventType.VARIABLE_ASSIGN) 
             {
-                Variable_Manager.AddVariable(lineTokens);
+                Variable_Manager.AddVariable(lineTokens, scopeCode);
+            }
+
+            if(lineEvent == EventType.IMPLICIT_VARIABLE_ASSIGN) 
+            {
+                string? rawValue = Array_Utility.JoinArray(lineTokens, ' ', startIndex: 2);
+                Type.Type type = Variable_Type.GetTypeFromValue(rawValue, new Type.Type("NullType"));
+                Variable_Manager.AddVariable($"{lineTokens[0]} : {type.typeName} : {rawValue}".Split(' '), scopeCode);
+            }
+
+            if(lineEvent == EventType.VARIABLE_COPY) 
+            {
+                Variable_Manager.CopyVariable(lineTokens, scopeCode);
+            }
+
+            if(lineEvent == EventType.IMPLICIT_VARIABLE_COPY) 
+            {
+                Variable_Manager.CopyVariable(lineTokens[2], lineTokens[0], scopeCode);
             }
 
             if(lineEvent == EventType.VARIABLE_DELETE) 

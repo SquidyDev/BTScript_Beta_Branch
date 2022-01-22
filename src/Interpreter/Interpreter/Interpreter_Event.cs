@@ -16,7 +16,9 @@ namespace BTScript.Interpreter.Event
         FUNCTION_DEFINE,
         IN_FUNCTION_CALL,
         COMMENT,
-        EMPTY_LINE
+        EMPTY_LINE,
+        IMPLICIT_VARIABLE_ASSIGN,
+        IMPLICIT_VARIABLE_COPY
     }
 
     static class Interpreter_Event
@@ -28,35 +30,41 @@ namespace BTScript.Interpreter.Event
             if (string.IsNullOrWhiteSpace(string.Join('\t', lineTokens))) return EventType.EMPTY_LINE;
 
             /*Check if the current line is a variable assign*/
-            if(lineTokens[1] == ":" && lineTokens[3] == ":" && Interpreter_Type.IsType(Interpreter_Type.GetTypeByName(lineTokens[2])) && !Variable_Manager.Exist(lineTokens[4])) return EventType.VARIABLE_ASSIGN;
-
-            /*Check if the current line is a variable delete*/
-            /*TO DO : Check if the deleted objecct is a variable*/
-            if(lineTokens[0] == "del") return EventType.VARIABLE_DELETE;
-
-            /*Check if the current line is a variable change*/
-            /*TO DO : Check if the changed object is a variable*/
-            if(lineTokens[1] == "=") return EventType.VARIABLE_CHANGE;
+            if(HasLength(lineTokens, 5) && lineTokens[1] == ":" && lineTokens[3] == ":" && Interpreter_Type.IsType(Interpreter_Type.GetTypeByName(lineTokens[2])) && !Variable_Manager.Exist(lineTokens[4])) return EventType.VARIABLE_ASSIGN;
 
             /*Check if the current line is a variable copy*/
-            if(lineTokens[1] == ":" && lineTokens[3] == ":" && Interpreter_Type.IsType(Interpreter_Type.GetTypeByName(lineTokens[2])) && Variable_Manager.Exist(lineTokens[4])) return EventType.VARIABLE_COPY;
+            if (HasLength(lineTokens, 5) && lineTokens[1] == ":" && lineTokens[3] == ":" && Interpreter_Type.IsType(Interpreter_Type.GetTypeByName(lineTokens[2])) && Variable_Manager.Exist(lineTokens[4])) return EventType.VARIABLE_COPY;
+
+            /*Checks if the current line is a variable being implicitly assigned*/
+            if (HasLength(lineTokens, 3) && lineTokens[1] == ":" && !Variable_Manager.Exist(lineTokens[0]) && lineTokens[2] != "?" && !Variable_Manager.Exist(lineTokens[2])) return EventType.IMPLICIT_VARIABLE_ASSIGN;
+
+            /*Checks if the current line is a variable being implicitly copied*/
+            if (HasLength(lineTokens, 3) && lineTokens[1] == ":" && !Variable_Manager.Exist(lineTokens[0]) && Variable_Manager.Exist(lineTokens[2])) return EventType.IMPLICIT_VARIABLE_COPY;
+
+            /*Check if the current line is a variable delete*/
+            if(HasLength(lineTokens, 2) && lineTokens[0] == "del" && Variable_Manager.Exist(lineTokens[1])) return EventType.VARIABLE_DELETE;
+
+            /*Check if the current line is a variable change*/
+            if(HasLength(lineTokens, 3) && lineTokens[1] == "=" && Variable_Manager.Exist(lineTokens[0])) return EventType.VARIABLE_CHANGE;
 
             /*Check if the current line is a function call*/
             /*TO DO : Check if the called object is a function*/
-            if (lineTokens[0] == "call" && lineTokens[1] != "in") return EventType.FUNCTION_CALL;
+            if (HasLength(lineTokens, 2) && lineTokens[0] == "call" && lineTokens[1] != "in") return EventType.FUNCTION_CALL;
 
             /*Check if the current line is a function define*/
-            if(lineTokens[1] == "::" && lineTokens.Last() == "{") return EventType.FUNCTION_DEFINE;
+            if(HasLength(lineTokens, 3) && lineTokens[1] == "::" && lineTokens.Last() == "{") return EventType.FUNCTION_DEFINE;
 
             /*Check if the current line is an in function call*/
             /*TO DO : Check if the called builtin object exists*/
-            if(lineTokens[0] == "call" && lineTokens[1] == "in" && (lineTokens[3] == ":"  || lineTokens[3] == "?")) return EventType.IN_FUNCTION_CALL;
+            if(HasLength(lineTokens, 4) && lineTokens[0] == "call" && lineTokens[1] == "in" && (lineTokens[3] == ":"  || lineTokens[3] == "?")) return EventType.IN_FUNCTION_CALL;
 
             /*Check if the current line is a comment*/
-            if(lineTokens[0] == "$" || lineTokens[0][1] == '$') return EventType.COMMENT;
+            if(HasLength(lineTokens, 1) && lineTokens[0] == "$" || lineTokens[0][1] == '$') return EventType.COMMENT;
 
             Interpreter_Config.mainDebugger.Fatal($"Unknow event for line : {string.Join(" ", lineTokens)}");
             return null;
         }
+
+        static bool HasLength(string[] lineTokens, int length) => lineTokens.Length >= length;
     }
 }

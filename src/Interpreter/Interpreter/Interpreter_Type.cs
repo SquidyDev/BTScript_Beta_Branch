@@ -1,4 +1,4 @@
-﻿using BTScript.Interpreter.Configuration;
+﻿using BTScript.Interpreter.Configuration
 
 namespace BTScript.Interpreter.Type
 {
@@ -11,6 +11,9 @@ namespace BTScript.Interpreter.Type
         public bool inFunction;
         public object? baseValue;
 
+        /*The function to check if a value matches the type*/
+        Func<string, bool> IsTypeOf;
+
         /*Constructor With name only (variable & function will be true so)*/
         public Type(string name, object? baseValue=null) 
         {
@@ -18,15 +21,17 @@ namespace BTScript.Interpreter.Type
             inVariable = true;
             inFunction = true;
             this.baseValue = baseValue;
+            IsTypeOf = (string a) => false;
         }
 
         /*Constructor with all data in types*/
-        public Type(string name, bool variable, bool function, object? baseValue) 
+        public Type(string name, bool variable, bool function, object? baseValue, Func<string, bool> isTypeOf) 
         {
             typeName = name;
             inFunction = function;
             inVariable = variable;
             this.baseValue = baseValue;
+            this.IsTypeOf = isTypeOf;
         }
 
         /*Return the name of the type*/
@@ -55,7 +60,13 @@ namespace BTScript.Interpreter.Type
     {
         static List<Type> types = new List<Type>();
 
-        static Type[] builtinTypes = { new Type("int", baseValue:0), new Type("float", baseValue:0.0), new Type("bool", baseValue:"false"), new Type("char", baseValue:"'0'"), new Type("string", baseValue:"\"\""), new Type("pointer", baseValue:".-> null") };
+        static Type[] builtinTypes = {
+            new Type("int", baseValue:0), 
+            new Type("float", baseValue:0.0), 
+            new Type("bool", baseValue:"false"), 
+            new Type("char", baseValue:"'0'"), 
+            new Type("string", baseValue:"\"\""), 
+        };
 
         /*Init all the prebuiltin types*/
         /*Should Only be call one time at program start*/

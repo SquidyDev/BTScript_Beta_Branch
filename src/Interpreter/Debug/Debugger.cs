@@ -35,6 +35,12 @@ namespace BTScript.Debug
             attachedDebugger.Add(newDebugger);
         }
 
+        //Same Principal as Attach but works with an array
+        public void Attach(Debugger[] newDebuggers) 
+        {
+            foreach(Debugger newDebugger in newDebuggers) attachedDebugger.Add(newDebugger);
+        }
+
         //Detach a specific debugger from the current output
         public void Detach(Debugger debugger) 
         {
